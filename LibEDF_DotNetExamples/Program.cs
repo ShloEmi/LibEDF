@@ -2,9 +2,9 @@
 
 namespace LibEDF_DotNetExamples
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Example1_Create_And_Save_EDF();
 
@@ -14,7 +14,7 @@ namespace LibEDF_DotNetExamples
 
         private static void Example1_Create_And_Save_EDF() {
 
-            //Crreate an empty EDF file
+            //Create an empty EDF file
             var edfFile = new EDFFile();
 
             //Create a signal object
@@ -32,7 +32,7 @@ namespace LibEDF_DotNetExamples
             ecgSig.Samples = new short[] { 100, 50, 23, 75, 12, 88, 73, 12, 34, 83 };
 
             //Set the signal
-            edfFile.Signals = new EDFSignal[1] { ecgSig };
+            edfFile.Signals = new[] { ecgSig };
 
             //Create the header object
             var h = new EDFHeader();
@@ -52,28 +52,27 @@ namespace LibEDF_DotNetExamples
             edfFile.Header = h;
 
             //Print some info
-            Console.Write(
-                "\nPatient ID:\t\t" + edfFile.Header.PatientID.Value +
-                "\nNumber of signals:\t" + edfFile.Header.NumberOfSignals.Value +
-                "\nStart date:\t\t" + edfFile.Header.StartDate.Value +
-                "\nSignal label:\t\t" + edfFile.Signals[0].Label.Value +
-                "\nSignal samples:\t\t"
-                    + String.Join(",", edfFile.Signals[0].Samples.Skip(0).Take(10).ToArray())
-                    + "\n\n"
-             );
+            var NL = $"{Environment.NewLine}";
+            Console.Write(NL +
+                          $"Patient ID:\t\t{edfFile.Header.PatientID.Value}{NL}" +
+                          $"Number of signals:\t{edfFile.Header.NumberOfSignals.Value}{NL}" +
+                          $"Start date:\t\t{edfFile.Header.StartDate.Value}{NL}" +
+                          $"Signal label:\t\t{edfFile.Signals[0].Label.Value}{NL}" +
+                          $"Signal samples:\t\t{string.Join(",", edfFile.Signals[0].Samples.Skip(0).Take(10).ToArray())}{NL}{NL}"
+            );
 
             //Save the file
-            string fileName = @"C:\temp\example.edf";
+            var fileName = @"C:\temp\example.edf";
             edfFile.Save(fileName);
 
             //Read the file
-            var f = new EDFFile(fileName);
+            var edfFile1 = new EDFFile(fileName);
 
             Console.ReadLine();
         }
 
         private static void Example2_Read_EDF_From_Base64(string edfBase64FilePath) {
-            var edfBase64 = File.ReadAllText(edfBase64FilePath);
+            string edfBase64 = File.ReadAllText(edfBase64FilePath);
             var edfFile = new EDFFile();
             edfFile.ReadBase64(edfBase64);
             edfFile.Save(@"C:\temp\edf_bytes.edf");

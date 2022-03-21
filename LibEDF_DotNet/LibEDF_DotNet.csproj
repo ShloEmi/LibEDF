@@ -12,6 +12,7 @@
 		<FileVersion>2.0.0.0</FileVersion>
 		<Copyright>Copyright ©  2022</Copyright>
 		<Description>LibEDF - read and write EDF signal files.</Description>
+		<RootNamespace>LibEDF_DotNet</RootNamespace>
 	</PropertyGroup>
 
 </Project>

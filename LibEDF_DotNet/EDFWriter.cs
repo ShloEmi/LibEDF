@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Linq;
+﻿using System.Text;
 
 namespace LibEDF_DotNet
 {
-    class EDFWriter : BinaryWriter
+    internal class EDFWriter : BinaryWriter
     {
         public EDFWriter(FileStream fs) : base(fs) { }
 
@@ -40,15 +36,15 @@ namespace LibEDF_DotNet
 
             Console.WriteLine("Writer position after header: " + BaseStream.Position);
             Console.WriteLine("Writing signals.");
-            foreach (var sig in edf.Signals) WriteSignal(sig);
+            foreach (EDFSignal sig in edf.Signals) WriteSignal(sig);
 
             Close();
             Console.WriteLine("File size: " + File.ReadAllBytes(edfFilePath).Length);
         }
 
-        private int CalcNumOfBytesInHeader(EDFFile edf)
+        private static int CalcNumOfBytesInHeader(EDFFile edf)
         {
-            int totalFixedLength = 256;
+            var totalFixedLength = 256;
             int ns = edf.Signals.Length;
             int totalVariableLength = ns * 16 + (ns * 80) * 2 + (ns * 8) * 6 + (ns * 32);
             return totalFixedLength + totalVariableLength;
@@ -57,57 +53,36 @@ namespace LibEDF_DotNet
         public void WriteItem(HeaderItem headerItem)
         {
             string strItem = headerItem.ToAscii();
-            if (strItem == null) strItem = "";
             byte[] itemBytes = AsciiToBytes(strItem);
-            this.Write(itemBytes);
+            Write(itemBytes);
             Console.WriteLine(headerItem.Name + " [" + strItem + "] \n\n-- ** BYTES LENGTH: " + itemBytes.Length 
-                + "> Position after write item: " + this.BaseStream.Position + "\n");
+                + "> Position after write item: " + BaseStream.Position + "\n");
         }
 
         public void WriteItem(IEnumerable<HeaderItem> headerItems)
         {
             string joinedItems = StrJoin(headerItems);
-            if (joinedItems == null) joinedItems = "";
             byte[] itemBytes = AsciiToBytes(joinedItems);
-            this.Write(itemBytes);
+            Write(itemBytes);
             Console.WriteLine("[" + joinedItems + "] \n\n-- ** BYTES LENGTH: " + itemBytes.Length 
-                + " Position after write item: " + this.BaseStream.Position + "\n");
+                + " Position after write item: " + BaseStream.Position + "\n");
         }
 
-        private string StrJoin(IEnumerable<HeaderItem> list)
-        {
-            string joinedString = "";
+        private static string StrJoin(IEnumerable<HeaderItem> list) => 
+            list.Aggregate("", (current, item) => current + item.ToAscii());
 
-            foreach (var item in list)
-            {
-                joinedString += item.ToAscii();
-            }
-
-            return joinedString;
-        }
-
-        private static byte[] AsciiToBytes(string strItem)
-        {
-            return Encoding.ASCII.GetBytes(strItem);
-        }
-
-        private static byte[] AsciiToIntBytes(string strItem, int length)
-        {
-            string strInt = "";
-            string str = strItem.Substring(0, length);
-            double val = Convert.ToDouble(str);
-            strInt += val.ToString("0").PadRight(length, ' ');
-            return Encoding.ASCII.GetBytes(strInt);
-        }
+        private static byte[] AsciiToBytes(string strItem) => 
+            Encoding.ASCII.GetBytes(strItem);
 
         public void WriteSignal(EDFSignal signal)
         {
-            Console.WriteLine("Write position before signal: " + this.BaseStream.Position);
-            for (int i = 0; i < signal.NumberOfSamples.Value; i++)
+            Console.WriteLine("Write position before signal: " + BaseStream.Position);
+            for (var i = 0; i < signal.NumberOfSamples.Value; i++)
             {
-                this.Write(BitConverter.GetBytes(signal.Samples[i]));
+                Write(BitConverter.GetBytes(signal.Samples[i]));
             }
-            Console.WriteLine("Write position after signal: " + this.BaseStream.Position);
+
+            Console.WriteLine("Write position after signal: " + BaseStream.Position);
         }
     }
 }

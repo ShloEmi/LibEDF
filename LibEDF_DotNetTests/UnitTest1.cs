@@ -38,7 +38,7 @@ namespace EDFSharpTests
             soundSig.Samples = new short[] { 11, 200, 300, 123, 87, 204, 145, 234, 222, 75 };
             soundSig.Reserved.Value = "RESERVED";
                         
-            edf1.Signals = new EDFSignal[2] { ecgSig, soundSig };
+            edf1.Signals = new[] { ecgSig, soundSig };
 
             var h = new EDFHeader();
             h.DurationOfDataRecord.Value = 1;
@@ -54,7 +54,7 @@ namespace EDFSharpTests
 
             edf1.Header = h;
 
-            string edfFilePath = @"C:\temp\test1.EDF";
+            var edfFilePath = @"C:\temp\test1.EDF";
 
             edf1.Save(edfFilePath);
 
