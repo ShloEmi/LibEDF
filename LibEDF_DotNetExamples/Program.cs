@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using LibEDF_DotNet;
-using System.IO;
+﻿using LibEDF_DotNet;
 
 namespace LibEDF_DotNetExamples
 {

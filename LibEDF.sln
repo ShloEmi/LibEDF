@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibEDF_Win32Dll", "LibEDF_Win32Dll\LibEDF_Win32.vcxproj", "{A668263C-D2F8-4038-B96D-F00AAF44CF90}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibEDF_Win32Example", "LibEDF_Win32Example\LibEDF_Win32Example.vcxproj", "{F8085787-2F85-4BF2-A617-6D7D99DD8415}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibEDF_DotNet", "LibEDF_DotNet\LibEDF_DotNet.csproj", "{7E8B16EB-EB43-4A0F-B4AA-D00BFE41EBE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibEDF_DotNet", "LibEDF_DotNet\LibEDF_DotNet.csproj", "{7E8B16EB-EB43-4A0F-B4AA-D00BFE41EBE2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibEDF_DotNetExamples", "LibEDF_DotNetExamples\LibEDF_DotNetExamples.csproj", "{73ACE459-8CE0-4D90-95EE-A9B3543E183F}"
 EndProject
@@ -82,5 +82,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0D2B70B7-F34D-456B-B544-009498505CA2}
 	EndGlobalSection
 EndGlobal
